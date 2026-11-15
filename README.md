@@ -286,9 +286,9 @@ $ docker exec captest sh -c 'capsh --decode=00000000a80425fb'
 >
 > To demonstrate this, we used the `fdisk` tool from the container to: 1) view the host's partitions, 2) create a new one and confirm it exists on the host, and 3) delete that same partition (this deletion could target any other partition on the host). The `fdisk` commands used are as follows:
 >
-> - `fdisk -l /dev/sda` — Lists all available partitions.
-> - `printf "n\n\n\n\n+100M\nw\n" | fdisk /dev/sda` — Creates a new 100 MB partition on the disk.
-> - `printf "d\n3\nw\n" | fdisk /dev/sda` — Deletes the partition.
+> - `fdisk -l /dev/nvme0n1` — Lists all available partitions.
+> - `printf "n\n\n\n\n+100M\nw\n" | fdisk /dev/nvme0n1` — Creates a new 100 MB partition on the disk.
+> - `printf "d\n3\nw\n" | fdisk /dev/nvme0n1` — Deletes a partition.
 >
 ![Partition Manipulation](./images/partition-manipulation.png)
 >

