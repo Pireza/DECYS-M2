@@ -25,6 +25,7 @@ This project was developed in a Linux environment.
 > **USER**=user01_team15
 > 
 > OBS.: we use the `--rm` flag to stop the container when it exits
+> [Click here for the video](./videos/Q2.mp4)
 
 ---
 
@@ -41,8 +42,8 @@ This project was developed in a Linux environment.
 
 ![Image Diving](./images/dive.png)
 
-> The image above confirms the expected behaviour and when selecting the `COPY . .` layer we can see that the `.env` file is present in the filesystem.
-> 
+> The image above confirms the expected behaviour and when selecting the `COPY . .` layer we can see that the `.env` file is present in the filesystem. This layer is identified by a SHA-256 digest, which is a cryptographic hash of the layer's exact contents — any change to those contents, even a single byte, produces a completely different hash. Since each team was assigned its own `insecurelabs02` tag with a unique `API_KEY` and `USER` baked into its `.env` file, the contents of the `COPY . .` layer differ from team to team, even though the Dockerfile and the rest of the project structure are identical. This is why our layer's digest may not match another team's.
+
 > The next step is to extract the contents of that file and retrieve the new secrets. By diving into the image we can see `.env` is inside the `app` directory which serves as a starting point for our search. We followed the procedure below:
 > - We exported all layers into a single tarball using `docker save isepdei/insecurelabs02:team15 -o img.tar`. For each layer within the image, `img.tar` includes a tarball inside the `blobs/sha256` **containing their corresponding file system**.
 > - Find out which tarball corresponds to the layer we want. Given our dive into the image, we know we are looking for the one containing the `app/.env` path.
@@ -274,7 +275,7 @@ $ docker exec captest sh -c 'capsh --decode=00000000a80425fb'
 
 **Q14:**
 
-> By running the docker with the `--priviledged` flag, Scott is giving all processes within the container **every single Linux capability**. By using the `print` command from before we can confirm this:
+> By running the docker with the `--priviledged` flag, Scott is giving all processes within the container **every single Linux capability**. By using the `print` and `grep` commands from before we can confirm this:
 
 ![All Caps](./images/all-caps.png)
 
