@@ -1,4 +1,4 @@
-TEAM: 15
+TEAM: 11
 
 MEMBERS: 1221063 & 1250400
 
@@ -20,11 +20,11 @@ This project was developed in a Linux environment.
 
 ![.env Contents](./images/Q2.png)
 
-> **API_KEY**=b56b8747-e791-4db5-a38d-46a91a55d91d
+> **API_KEY**=235b8c8b-73a6-449e-bcc2-ef99cdcd1815
 > 
-> **USER**=user01_team15
+> **USER**=user01_team11
 > 
-> OBS.: we use the `--rm` flag to stop the container when it exits
+> OBS.: we use the `--rm` flag to stop the container when it exits.
 > [Click here for the video](./videos/Q2.mp4)
 
 ---
@@ -37,19 +37,19 @@ This project was developed in a Linux environment.
 **Q4**:
 > To support the previous question's statements, we can use the **dive** CLI tool to analyse the docker image layer by layer:
 
-```dive isepdei/insecurelabs02:team15``` 
+```dive isepdei/insecurelabs02:team11``` 
 >  When iterating over each layer it shows a snapshot of the filesystem of the image on that build phase.
 
 ![Image Diving](./images/dive.png)
 
-> The image above confirms the expected behaviour and when selecting the `COPY . .` layer we can see that the `.env` file is present in the filesystem. This layer is identified by a SHA-256 digest, which is a cryptographic hash of the layer's exact contents — any change to those contents, even a single byte, produces a completely different hash. Since each team was assigned its own `insecurelabs02` tag with a unique `API_KEY` and `USER` baked into its `.env` file, the contents of the `COPY . .` layer differ from team to team, even though the Dockerfile and the rest of the project structure are identical. This is why our layer's digest may not match another team's.
+> The image above confirms the expected behaviour and when selecting the `COPY . .` layer we can see that the `.env` file is present in the filesystem. This layer is identified by a SHA-256 digest, which is a cryptographic hash of the layer's exact contents — any change to those contents, even a single byte, produces a completely different hash. Since each team was assigned its own `insecurelabs02` tag with a unique `API_KEY` and `USER` baked into its `.env` file, the contents of the `COPY . .` layer differ from team to team, even though the Dockerfile and the rest of the project structure are identical. This is why our layer's digest may not match another team's. In our case, the corresponding layer's hash is `53d9254b988c87bdb8fb810cde34f57267f6b409eccf9f87f1335fdbdf880ea6`.
 
 > The next step is to extract the contents of that file and retrieve the new secrets. By diving into the image we can see `.env` is inside the `app` directory which serves as a starting point for our search. We followed the procedure below:
-> - We exported all layers into a single tarball using `docker save isepdei/insecurelabs02:team15 -o img.tar`. For each layer within the image, `img.tar` includes a tarball inside the `blobs/sha256` **containing their corresponding file system**.
+> - We exported all layers into a single tarball using `docker save isepdei/insecurelabs02:team11 -o img.tar`. For each layer within the image, `img.tar` includes a tarball inside the `blobs/sha256` **containing their corresponding file system**.
 > - Find out which tarball corresponds to the layer we want. Given our dive into the image, we know we are looking for the one containing the `app/.env` path.
 > - Extract the contents of the `.env` file.
 >
-> To faciliate the 2nd and 3rd steps, we used the [**find-env.sh**](./TARGETS/target-4/find-env.sh) bash script to both **find** the `.env` file and **print** its secret contents to the standard output:
+> To faciliate the 2nd and 3rd steps, we used the [**find-env.sh**](./TARGETS/target-4/find-env.sh) bash script to both **find** the `.env` file and **print** its secret contents to the standard output ([click here for video](./videos/Q4.mp4)):
 
 ```bash
 #!/bin/bash
@@ -83,9 +83,9 @@ echo "$(tar -xf "$ENV_PATH" app/.env -O)"
 exit
 ```
 
-> **API_KEY**=a0115421-e198-4373-abe6-29ce9c6c1847
+> **API_KEY**=590198bf-1287-4fdb-a576-bbee1b792348
 >
-> **USER**=user02_team15
+> **USER**=user02_team11
 
 ---
 
